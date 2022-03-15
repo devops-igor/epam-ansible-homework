@@ -1,0 +1,35 @@
+---
+- name: Install httpd package
+  become: true
+  ansible.builtin.package:
+    name:
+      - httpd
+    state: present
+
+- name: Create custom /var/www/html/index.html
+  become: true
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/index.html.j2"
+    dest: /var/www/html/index.html
+    mode: 0644
+
+- name: Start httpd
+  become: true
+  ansible.builtin.systemd:
+    state: started
+    name: httpd
+
+- name: Enable webserver service and ensure it is not masked
+  become: true
+  ansible.builtin.systemd:
+    name: httpd
+    enabled: true
+    masked: false
+
+- name: Allow 80 port on firewalld
+  become: true
+  ansible.builtin.firewalld:
+    port: 80/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled

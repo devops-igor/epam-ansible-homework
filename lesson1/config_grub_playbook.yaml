@@ -1,0 +1,5 @@
+---
+- name: Config /etc/default/grub and update grub if needed
+  hosts: webserver
+  roles:
+    - {role: config_grub}

@@ -1,0 +1,21 @@
+---
+- name: Remove httpd package
+  become: true
+  ansible.builtin.package:
+    name:
+      - httpd
+    state: absent
+
+- name: Remove custom /var/www/html/index.html
+  become: true
+  ansible.builtin.file:
+    path: /var/www/html/index.html
+    state: absent
+
+- name: Reject 80 port in firewalld
+  become: true
+  ansible.builtin.firewalld:
+    port: 80/tcp
+    permanent: yes
+    immediate: yes
+    state: disabled

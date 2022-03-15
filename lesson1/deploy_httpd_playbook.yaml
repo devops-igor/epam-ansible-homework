@@ -1,0 +1,5 @@
+---
+- name: Deploy httpd, custom index.html and open 80 port
+  hosts: webserver
+  roles:
+    - {role: httpd_deploy}
