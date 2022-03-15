@@ -17,5 +17,5 @@
     regexp: '(^GRUB_CMDLINE_LINUX=.*)\"'
     line: '\1 net.ifnames=0 biosdevname=0"'
   when: grub_file_check.found == 0
-  notify: 
-  - Update grub
+  notify:
+    - Update grub

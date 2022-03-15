@@ -16,6 +16,6 @@
   become: true
   ansible.builtin.firewalld:
     port: 80/tcp
-    permanent: yes
-    immediate: yes
+    permanent: true
+    immediate: true
     state: disabled
