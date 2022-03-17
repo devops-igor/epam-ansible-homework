@@ -1,0 +1,5 @@
+---
+- name: Create users Alice, Bob, Carol
+  hosts: nodes
+  roles:
+    - {role: create_users}

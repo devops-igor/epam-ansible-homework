@@ -1,0 +1,15 @@
+---
+- name: Create users Alice, Bob, Carol
+  become: true
+  ansible.builtin.user:
+    name: "{{ item.user }}"
+    password: "{{ item.password | password_hash('sha512') }}"
+    state: present
+    shell: /bin/bash
+    home: "{{ item.home }}"
+    system: false
+    createhome: true
+    update_password: on_create
+    comment: "{{ item.comment }}"
+  with_items:
+    - "{{ users }}"
