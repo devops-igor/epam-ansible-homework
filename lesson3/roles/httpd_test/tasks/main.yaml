@@ -1,0 +1,26 @@
+---
+- name: Collect facts about system services
+  ansible.builtin.service_facts:
+
+- name: Debug webserver service state
+  ansible.builtin.debug:
+    var: ansible_facts.services["httpd.service"].state
+  register: state
+
+- name: Try and restart a webserver if state is "stopped"
+  become: true
+  ansible.builtin.service:
+    name: httpd
+    state: restarted
+  when: "'stopped' in state.values()"
+
+- name: GET root url
+  ansible.builtin.uri:
+    url: "http://{{ ansible_host }}"
+    status_code: 200
+  delegate_to: localhost
+  register: response
+
+- name: Web-page respose status
+  ansible.builtin.debug:
+    msg: "{{ response.status }}"

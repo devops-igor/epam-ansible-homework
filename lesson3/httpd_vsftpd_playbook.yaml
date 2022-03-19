@@ -1,0 +1,11 @@
+---
+- name: Deploy httpd to webserver and test that it is responding with 200 code
+  hosts: webserver
+  roles:
+    - {role: httpd_deploy}
+    - {role: httpd_test}
+- name: Deploy vsftpd to fptserver and test anonymous upload to it
+  hosts: ftpserver
+  roles:
+    - {role: vsftpd_deploy}
+    - {role: vsftpd_test_upload}

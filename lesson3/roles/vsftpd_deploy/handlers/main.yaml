@@ -1,0 +1,21 @@
+---
+- name: Restart vsftpd
+  become: true
+  ansible.builtin.systemd:
+    state: restarted
+    name: vsftpd
+
+- name: Set firewall
+  become: true
+  ansible.builtin.firewalld:
+    service: ftp
+    permanent: true
+    immediate: true
+    state: enabled
+
+- name: Set SElinux
+  become: true
+  ansible.builtin.seboolean:
+    name: ftpd_anon_write
+    persistent: true
+    state: true

@@ -1,0 +1,7 @@
+---
+anonymous:
+  enable: "YES"
+  upload: "YES"
+  mkdir: "NO"
+write:
+  enable: "YES"

@@ -1,0 +1,18 @@
+---
+- name: Test upload to ftp server
+  ansible.builtin.shell: curl -T {{ role_path }}/files/testfile \
+    ftp://anonymous:anonymous@{{ ansible_host }}/pub/upload/
+  args:
+    warn: false
+  delegate_to: localhost
+  register: upload_result
+
+- name: Display upload_result
+  ansible.builtin.debug:
+    var: upload_result
+
+- name: Remove testfile
+  become: true
+  ansible.builtin.file:
+    path: /var/ftp/pub/upload/testfile
+    state: absent

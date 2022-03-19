@@ -1,0 +1,9 @@
+---
+- name: Install everything for ansible.builtin.seboolean to work
+  become: true
+  ansible.builtin.package:
+    name:
+      - libselinux-python3
+      - libsemanage-python3
+    update_cache: true
+    state: present

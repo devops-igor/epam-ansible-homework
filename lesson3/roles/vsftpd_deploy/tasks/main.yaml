@@ -1,0 +1,42 @@
+---
+- name: Install everything for ansible.builtin.seboolean to work
+  import_tasks: install_requirements.yaml
+
+- name: Install vsftpd package
+  become: true
+  ansible.builtin.package:
+    name:
+      - vsftpd
+    state: present
+
+- name: Start and enable vsftpd
+  become: true
+  ansible.builtin.systemd:
+    state: started
+    enabled: true
+    name: vsftpd
+
+- name: Create /var/ftp/pub/upload/ for anonymous upload
+  become: true
+  ansible.builtin.file:
+    path: /var/ftp/pub/upload/
+    state: directory
+    mode: 0700
+    owner: "ftp"
+    group: "ftp"
+    setype: "public_content_rw_t"
+    seuser: "system_u"
+
+- name: Create custom config /etc/vsftpd/vsftpd.conf
+  become: true
+  ansible.builtin.template:
+    src: "{{ role_path }}/templates/vsftpd.conf.j2"
+    dest: /etc/vsftpd/vsftpd.conf
+    mode: 0600
+  notify:
+    - Restart vsftpd
+    - Set firewall
+    - Set SElinux
+
+- name: Flush handlers
+  meta: flush_handlers
